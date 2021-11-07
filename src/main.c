@@ -8,6 +8,7 @@
 #include "scheduler.h"
 
 const int DEBUG = 0;
+const int LOG = 0;
 
 struct disk DISK;
 
@@ -23,7 +24,7 @@ int SECTORS = 20;
 
 policy POLICY = RANDOM;
 int NUM_REQUESTS = 1000;
-int TIME_GAP = 2; // choose this wisely else all your policies might end up being fifo
+int TIME_GAP = 5; // choose this wisely else all your policies might end up being fifo
 
 int main(int argc, char **argv)
 {
@@ -42,8 +43,8 @@ int main(int argc, char **argv)
 	POLICY = atoi(argv[4]);
 	init(&DISK);
 
-	printf("Initial position of head: %d\n", DISK.__curr_track);
-	printf("Initial position of platter: %d\n", DISK.__curr_sector);
+	if (LOG) printf("Initial position of head: %d\n", DISK.__curr_track);
+	if (LOG) printf("Initial position of platter: %d\n", DISK.__curr_sector);
 
 	// get request queue
 	struct results stats = schedule();

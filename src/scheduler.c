@@ -10,7 +10,7 @@
 #define min(X, Y) (((X) < (Y)) ? (X) : (Y))
 #define max(X, Y) (((X) > (Y)) ? (X) : (Y))
 
-extern const int DEBUG;
+extern const int DEBUG, LOG;
 
 extern struct disk DISK;
 
@@ -45,7 +45,8 @@ struct results schedule()
 	if (DEBUG) for (int i = 0; i < NUM_REQUESTS; i++) printf("%lld ", response_time[i]);
 	
 	struct results results;
-	results.throughput = (1000 * NUM_REQUESTS) / time;
+	if (time != 0) results.throughput = (1000 * NUM_REQUESTS) / time;
+	else results.throughput = INF;
 	get_stats(response_time, &results);
 
 	free(request);
@@ -140,6 +141,7 @@ int _scan(struct request *request, long long *response_time, long long *time)
 	if (closest_index != -1) return closest_index;
 
 	// opposite direction scan
+	if (LOG) printf("opposite scan\n");
 	for (int i = 0; i < NUM_REQUESTS; i++)
 	{
 		if (response_time[i] == -1 && request[i].spawn_time <= *time)

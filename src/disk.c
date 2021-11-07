@@ -13,21 +13,21 @@ void init(struct disk *d)
 	d -> __head_direction = 1;
 }
 
-int seek(struct disk *d, struct address a)
+double seek(struct disk *d, struct address a)
 {
-	int time_elapsed = 0; // in milliseconds
+	double time_elapsed = 0; // in milliseconds
 
 	// take care of -1 cases
 
 	// moving head to required position and updating sector as well
 	if (a.cylinder != -1)
 	{
-		long long time = abs(d->__curr_track - a.cylinder);
+		double time = abs(d->__curr_track - a.cylinder);
 		time = ((3 * d->T * time) / CYLINDERS); // because T is average seek time
 		d->__curr_track = a.cylinder;
 		
-		long long sectors_per_ms = (d->R * SECTORS) / 60000;
-		d->__curr_sector += (time * sectors_per_ms) % SECTORS;
+		double sectors_per_ms = (d->R * SECTORS) / 60000;
+		d->__curr_sector += ((int) (time * sectors_per_ms)) % SECTORS;
 		d->__curr_sector %= SECTORS;
 
 		time_elapsed += time;
@@ -36,11 +36,12 @@ int seek(struct disk *d, struct address a)
 	// catching on the right sector
 	if (a.sector != -1)
 	{
-		long long time = (a.sector - d->__curr_sector);
+		double time = (a.sector - d->__curr_sector);
 		if (time < 0) time += SECTORS;
 
-		long long sectors_per_ms = (d->R * 60000) / SECTORS;
-		time = time / sectors_per_ms;
+		double sectors_per_ms = (d->R * SECTORS) / 60000;
+		if (sectors_per_ms != 0) time = time / sectors_per_ms;
+		else printf("garbage results: very low head speed\n");
 		d->__curr_sector = a.sector;
 
 		time_elapsed += time;

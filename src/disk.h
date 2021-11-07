@@ -7,7 +7,7 @@ struct disk
 	int __curr_sector;
 	int __curr_track;
 
-	char __head_direction; // required for scan algo: 1=cw & -1=acw
+	int __head_direction; // required for scan algo: 1=cw & -1=acw
 };
 
 struct address
@@ -17,4 +17,4 @@ struct address
 
 
 void init(struct disk *d);
-int seek(struct disk *d, struct address a);
+double seek(struct disk *d, struct address a);
