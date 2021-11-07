@@ -26,6 +26,7 @@ FILE STRUCTURES
 .
 ├── bin
 │   └── run
+├── Design.pdf
 ├── LICENSE
 ├── obj
 │   ├── disk.o
@@ -42,13 +43,13 @@ FILE STRUCTURES
 ├── src
 │   ├── disk.c
 │   ├── disk.h
-│   ├── main
 │   ├── main.c
 │   ├── request.c
 │   ├── request.h
 │   ├── scheduler.c
 │   └── scheduler.h
 └── test
+
 
 Assumption: Disk Scheduling Algorithms themselves take no time.
 
